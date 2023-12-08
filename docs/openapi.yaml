@@ -33,6 +33,46 @@ paths:
       responses:
         "201":
           description: Created
+  /books/{name}/reserve: # Ajout de la nouvelle route pour réserver un livre par nom dans l'URL
+    post:
+      tags:
+        - book-controller
+      operationId: reserveBookByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+  /books/use/{name}/reserve: # Ajout de la route pour réserver un livre par nom dans l'URL
+    post:
+      tags:
+        - book-controller
+      operationId: reserveBookByNameUseCase
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                type: string
 components:
   schemas:
     BookDTO:
