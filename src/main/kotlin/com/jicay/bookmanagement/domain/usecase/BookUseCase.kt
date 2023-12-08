@@ -20,9 +20,9 @@ class BookUseCase(
         val book = bookPort.getBookByName(name)
         if (book != null && !book.reservation) {
             book.reservation = true
-            bookPort.updateBook(book) // Mettre à jour la réservation dans le port
-            return true // Réservation réussie
+            bookPort.updateBook(book)
+            return true
         }
-        return false // Le livre n'est pas disponible ou n'existe pas
+        return false
     }
 }

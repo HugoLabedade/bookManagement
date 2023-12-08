@@ -1,6 +1,7 @@
 package com.jicay.bookmanagement.infrastructure.driver.web
 
 import com.jicay.bookmanagement.domain.model.Book
+import com.jicay.bookmanagement.domain.port.BookPort
 import com.jicay.bookmanagement.domain.usecase.BookUseCase
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
@@ -26,10 +27,13 @@ class BookControllerIT {
     @Autowired
     lateinit var mockMvc: MockMvc
 
+    @Autowired
+    lateinit var bookPort: BookPort
+
     @Test
     fun `rest route get books`() {
         // GIVEN
-        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B", false))
+        every { bookUseCase.getAllBooks() } returns listOf(Book("A", "B",false))
 
         // WHEN
         mockMvc.get("/books")
@@ -43,7 +47,8 @@ class BookControllerIT {
                         [
                           {
                             "name": "A",
-                            "author": "B"
+                            "author": "B",
+                            "reservation": false
                           }
                         ]
                     """.trimIndent()
@@ -60,7 +65,8 @@ class BookControllerIT {
             content = """
                 {
                   "name": "Les misérables",
-                  "author": "Victor Hugo"
+                  "author": "Victor Hugo",
+                  "reservation": false
                 }
             """.trimIndent()
             contentType = APPLICATION_JSON
@@ -87,7 +93,8 @@ class BookControllerIT {
             content = """
                 {
                   "title": "Les misérables",
-                  "author": "Victor Hugo"
+                  "author": "Victor Hugo",
+                  "reservation": false
                 }
             """.trimIndent()
             contentType = APPLICATION_JSON
