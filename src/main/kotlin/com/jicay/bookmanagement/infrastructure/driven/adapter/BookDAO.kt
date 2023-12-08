@@ -13,7 +13,8 @@ class BookDAO(private val namedParameterJdbcTemplate: NamedParameterJdbcTemplate
             .query("SELECT * FROM BOOK", MapSqlParameterSource()) { rs, _ ->
                 Book(
                     name = rs.getString("title"),
-                    author = rs.getString("author")
+                    author = rs.getString("author"),
+                    reservation = rs.getBoolean("reservation")
                 )
             }
     }

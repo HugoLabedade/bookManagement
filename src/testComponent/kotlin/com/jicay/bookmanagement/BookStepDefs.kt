@@ -13,6 +13,8 @@ import io.restassured.path.json.JsonPath
 import io.restassured.response.ValidatableResponse
 import org.springframework.boot.test.web.server.LocalServerPort
 
+import io.cucumber.java.en.Given
+
 class BookStepDefs {
     @LocalServerPort
     private var port: Int? = 0
@@ -23,8 +25,8 @@ class BookStepDefs {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails()
     }
 
-    @When("the user creates the book {string} written by {string}")
-    fun createBook(title: String, author: String) {
+    @When("the user creates the book {string} written by {string} and reservation is {boolean}")
+    fun createBook(title: String, author: String, reservation: Boolean) {
         given()
             .contentType(ContentType.JSON)
             .and()
@@ -32,7 +34,8 @@ class BookStepDefs {
                 """
                     {
                       "name": "$title",
-                      "author": "$author"
+                      "author": "$author",
+                      "reservation": $reservation
                     }
                 """.trimIndent()
             )
@@ -40,6 +43,7 @@ class BookStepDefs {
             .post("/books")
             .then()
             .statusCode(201)
+
     }
 
     @When("the user get all books")
@@ -57,7 +61,7 @@ class BookStepDefs {
             """
                 ${
                     line.entries.joinToString(separator = ",", prefix = "{", postfix = "}") {
-                        """"${it.key}": "${it.value}""""
+                        """"${it.key}": ${if (it.key == "reservation") it.value.toString() else "\"${it.value}\""}"""
                     }
                 }
             """.trimIndent()
